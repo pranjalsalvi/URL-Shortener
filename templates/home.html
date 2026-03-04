@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+    body {
+        background-color: #f8fafc; /* Ultra-soft grey base */
+    }
+
+    .auth-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid #ffffff;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
+    }
+
+    .sidebar-gradient {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    }
+
+    .input-premium {
+        background: #f1f5f9;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .input-premium:focus {
+        background: #ffffff;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    .form-transition {
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+    .animate-float { animation: float 6s ease-in-out infinite; }
+</style>
+
+<div class="min-h-screen flex items-center justify-center p-6">
+    <div class="auth-card flex flex-col lg:flex-row w-full max-w-5xl rounded-[2.5rem] overflow-hidden">
+        
+        <div class="lg:w-5/12 sidebar-gradient p-12 text-white flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute top-[-10%] left-[-10%] w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float"></div>
+            <div class="absolute bottom-[-5%] right-[-5%] w-48 h-48 bg-black/10 rounded-full blur-2xl"></div>
+        
+            <div class="z-10">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-900/20">
+                        <i data-lucide="link-2" class="text-indigo-600 w-7 h-7"></i>
+                    </div>
+                    <span class="text-2xl font-black tracking-tighter">Snap<span class="text-indigo-200">Link</span></span>
+                </div>
+                
+                <h1 class="text-4xl font-extrabold leading-[1.1] tracking-tight mb-4">
+                    Shrink your links, <br>
+                    <span class="text-indigo-200">expand your reach.</span>
+                </h1>
+                <p class="text-indigo-100 font-medium opacity-90">
+                    Create short, memorable links and track every click in real-time.
+                </p>
+            </div>
+        
+            <div class="z-10 space-y-4">
+                <div class="flex items-center gap-4 bg-white/10 p-5 rounded-[1.5rem] backdrop-blur-md border border-white/20">
+                    <div class="bg-white/20 p-2.5 rounded-xl">
+                        <i data-lucide="trending-up" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold">1.2 Million</p>
+                        <p class="text-xs text-indigo-100 opacity-80">Clicks tracked this month</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3 px-2">
+                    <div class="flex -space-x-3">
+                        <img class="w-8 h-8 rounded-full border-2 border-indigo-500 bg-slate-200" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User">
+                        <img class="w-8 h-8 rounded-full border-2 border-indigo-500 bg-slate-300" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" alt="User">
+                        <img class="w-8 h-8 rounded-full border-2 border-indigo-500 bg-slate-400" src="https://api.dicebear.com/7.x/avataaars/svg?seed=James" alt="User">
+                    </div>
+                    <p class="text-xs font-semibold tracking-wide uppercase opacity-80">Trusted by top creators</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:w-7/12 p-8 md:p-16 bg-white flex flex-col justify-center">
+            
+            <div id="login-section" class="form-transition opacity-100 scale-100">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-extrabold text-slate-900">Welcome back</h2>
+                    <p class="text-slate-500 mt-2 font-medium">Please enter your details to sign in.</p>
+                </div>
+
+                <form method="POST" action="/login" class="space-y-5">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">Username</label>
+                        <div class="relative group">
+                            <i data-lucide="user" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 transition-colors group-focus-within:text-indigo-600"></i>
+                            <input type="text" name="username" required
+                                class="input-premium w-full pl-12 pr-4 py-4 rounded-2xl outline-none text-slate-800 font-medium" 
+                                placeholder="Enter your username">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center ml-1">
+                            <label class="text-sm font-bold text-slate-700">Password</label>
+                            <a href="#" class="text-xs font-bold text-indigo-600 hover:text-indigo-700">Forgot?</a>
+                        </div>
+                        <div class="relative group">
+                            <i data-lucide="lock" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 transition-colors group-focus-within:text-indigo-600"></i>
+                            <input type="password" name="password" required
+                                class="input-premium w-full pl-12 pr-12 py-4 rounded-2xl outline-none text-slate-800 font-medium" 
+                                placeholder="••••••••">
+                            <button type="button" class="toggle-password absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors">
+                                <i data-lucide="eye" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button class="w-full py-4 bg-slate-900 text-white font-bold rounded-2xl hover:bg-indigo-600 hover:shadow-xl hover:shadow-indigo-200 transition-all active:scale-[0.98] mt-4">
+                        Sign In
+                    </button>
+                </form>
+
+                <p class="mt-8 text-center text-slate-500 font-medium">
+                    New around here? 
+                    <button onclick="toggleAuth(true)" class="text-indigo-600 font-bold hover:underline">Create account</button>
+                </p>
+            </div>
+
+            <div id="signup-section" class="form-transition hidden opacity-0 scale-95">
+                <div class="mb-10">
+                    <h2 class="text-3xl font-extrabold text-slate-900">Get Started</h2>
+                    <p class="text-slate-500 mt-2 font-medium">Create your account in seconds.</p>
+                </div>
+
+                <form method="POST" action="/signup" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-700 ml-1">Full Name</label>
+                            <input type="text" name="name" required class="input-premium w-full px-5 py-4 rounded-2xl outline-none font-medium" placeholder="Jane Doe">
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-slate-700 ml-1">Username</label>
+                            <input type="text" name="username" required class="input-premium w-full px-5 py-4 rounded-2xl outline-none font-medium" placeholder="janedoe">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">Password</label>
+                        <input type="password" name="password" required class="input-premium w-full px-5 py-4 rounded-2xl outline-none font-medium" placeholder="Create a strong password">
+                    </div>
+
+                    <button class="w-full py-4 bg-indigo-600 text-white font-bold rounded-2xl hover:bg-indigo-700 hover:shadow-xl hover:shadow-indigo-200 transition-all active:scale-[0.98] mt-4">
+                        Create Account
+                    </button>
+                </form>
+
+                <p class="mt-8 text-center text-slate-500 font-medium">
+                    Already a member? 
+                    <button onclick="toggleAuth(false)" class="text-indigo-600 font-bold hover:underline">Log in here</button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons();
+
+    function toggleAuth(showSignup) {
+        const login = document.getElementById('login-section');
+        const signup = document.getElementById('signup-section');
+
+        if (showSignup) {
+            login.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                login.classList.add('hidden');
+                signup.classList.remove('hidden');
+                setTimeout(() => {
+                    signup.classList.remove('opacity-0', 'scale-95');
+                    signup.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 400);
+        } else {
+            signup.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                signup.classList.add('hidden');
+                login.classList.remove('hidden');
+                setTimeout(() => {
+                    login.classList.remove('opacity-0', 'scale-95');
+                    login.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 400);
+        }
+    }
+
+    // Password Toggle
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+            const isPassword = input.type === "password";
+            input.type = isPassword ? "text" : "password";
+            this.innerHTML = isPassword ? `<i data-lucide="eye-off" class="w-5 h-5"></i>` : `<i data-lucide="eye" class="w-5 h-5"></i>`;
+            lucide.createIcons();
+        });
+    });
+</script>
+{% endblock %}

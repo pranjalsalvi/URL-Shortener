@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+    body {
+        background-color: #f8fafc; 
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Premium Glassmorphism Card */
+    .premium-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid #ffffff;
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Input Styling matching Auth Page */
+    .input-premium {
+        background: #f1f5f9;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .input-premium:focus {
+        background: #ffffff;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+    }
+
+    /* Button Styles */
+    .btn-dark {
+        background: #0f172a;
+        transition: all 0.3s ease;
+    }
+
+    .btn-dark:hover {
+        background: #6366f1;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-action {
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Fixed Logout Button */
+    .logout-btn-fixed {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 50;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+</style>
+
+<div class="min-h-screen py-12 px-6">
+    <div class="max-w-4xl mx-auto space-y-10">
+
+        <div class="flex flex-col items-center justify-center gap-3 mb-6">
+            <div class="w-16 h-16 bg-white rounded-[1.5rem] flex items-center justify-center shadow-2xl border border-slate-100">
+                <i data-lucide="link-2" class="text-indigo-600 w-9 h-9"></i>
+            </div>
+            <span class="text-3xl font-black tracking-tighter text-slate-900">Snap<span class="text-indigo-600">Link</span></span>
+        </div>
+
+        <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-8">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Dashboard
+                </h2>
+                <p class="text-slate-500 font-medium mt-1">
+                    Manage your links, <span class="text-indigo-600 font-bold">{{ session['username'] }}</span>
+                </p>
+            </div>
+            <div class="bg-white px-6 py-3 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Database</span>
+                    <span class="text-lg font-black text-slate-900">{{ urls|length }} Links</span>
+                </div>
+                <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center">
+                    <i data-lucide="database" class="w-5 h-5 text-indigo-500"></i>
+                </div>
+            </div>
+        </header>
+
+        <section class="premium-card p-3 rounded-[2.5rem] bg-white">
+            <form method="POST" class="flex flex-col md:flex-row gap-3">
+                <div class="relative flex-grow">
+                    <div class="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+                        <i data-lucide="link" class="w-5 h-5 text-slate-400"></i>
+                    </div>
+                    <input type="url" name="original_url" required
+                           class="input-premium w-full pl-14 pr-6 py-5 rounded-2xl outline-none text-slate-800 text-lg font-medium placeholder-slate-400"
+                           placeholder="Paste your long URL here...">
+                </div>
+                <button type="submit"
+                        class="btn-dark text-white px-10 py-5 rounded-2xl font-bold text-lg shadow-lg">
+                    Shorten
+                </button>
+            </form>
+        </section>
+
+        <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
+            <div class="px-8 py-7 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+                <h4 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="history" class="w-5 h-5 text-indigo-500"></i>
+                    Your History
+                </h4>
+            </div>
+
+            {% if urls %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-xs uppercase tracking-widest text-slate-400">
+                            <th class="px-8 py-5 font-bold">Original Destination</th>
+                            <th class="px-8 py-5 font-bold">Shortened URL</th>
+                            <th class="px-8 py-5 font-bold text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for url in urls %}
+                        <tr class="group hover:bg-slate-50/80 transition-all">
+                            <td class="px-8 py-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-slate-100 rounded-xl group-hover:bg-white transition-colors">
+                                        <i data-lucide="globe" class="w-4 h-4 text-slate-400"></i>
+                                    </div>
+                                    <span class="truncate max-w-[180px] md:max-w-[280px] text-slate-600 font-medium">
+                                        {{ url.original_url }}
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <a href="{{ url_for('redirect_to_url', short_code=url.short_code) }}"
+                                   target="_blank"
+                                   class="text-indigo-600 font-bold hover:text-indigo-800 flex items-center gap-1.5 underline decoration-indigo-100 underline-offset-8">
+                                    {{ request.host }} / {{ url.short_code }}
+                                    <i data-lucide="external-link" class="w-3 h-3"></i>
+                                </a>
+                            </td>
+                            <td class="px-8 py-6 text-right">
+                                <div class="flex justify-end items-center gap-2">
+                                    <button onclick="copyToClipboard('{{ request.host_url }}{{ url.short_code }}', this)"
+                                        class="btn-action inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-700 rounded-xl font-bold">
+                                        <i data-lucide="copy" class="w-4 h-4"></i>
+                                        <span class="hidden sm:inline">Copy</span>
+                                    </button>
+                                    
+                                    <form action="{{ url_for('delete_link', url_id=url.id) }}" method="POST" 
+                                          onsubmit="return confirm('Delete this link forever?');" class="inline">
+                                        <button type="submit"
+                                            class="btn-action inline-flex items-center justify-center w-11 h-11 bg-slate-100 hover:bg-red-500 hover:text-white text-slate-400 rounded-xl">
+                                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-20 text-center">
+                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="link-2" class="w-10 h-10 text-slate-200"></i>
+                </div>
+                <h5 class="text-slate-800 font-bold text-xl">No magic links yet</h5>
+                <p class="text-slate-400 mt-2 font-medium">Create your first shortened link above.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('logout') }}" 
+   class="logout-btn-fixed flex items-center gap-3 px-6 py-4 bg-white hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-200 rounded-[1.5rem] shadow-2xl transition-all font-bold group">
+    <div class="p-2 bg-slate-100 group-hover:bg-red-100 rounded-lg transition-colors">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+    </div>
+    <span>Logout</span>
+</a>
+
+<div id="toast"
+     class="fixed bottom-10 left-10 bg-white border border-slate-200 text-slate-800 font-bold px-8 py-5 rounded-2xl shadow-2xl opacity-0 translate-y-10 transition-all duration-500 pointer-events-none z-50 flex items-center gap-3">
+    <div class="bg-green-100 text-green-600 p-1.5 rounded-full">
+        <i data-lucide="check" class="w-4 h-4"></i>
+    </div>
+    Copied to clipboard!
+</div>
+
+<script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Copy Functionality
+    function copyToClipboard(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const originalContent = btn.innerHTML;
+            
+            // UI Feedback for button
+            btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> <span class="hidden sm:inline">Copied!</span>`;
+            btn.classList.replace('bg-slate-100', 'bg-green-500');
+            btn.classList.replace('text-slate-700', 'text-white');
+            lucide.createIcons();
+
+            // Toast Notification
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0','translate-y-10');
+            toast.classList.add('opacity-100','translate-y-0');
+
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.classList.replace('bg-green-500', 'bg-slate-100');
+                btn.classList.replace('text-white', 'text-slate-700');
+                toast.classList.add('opacity-0','translate-y-10');
+                toast.classList.remove('opacity-100','translate-y-0');
+                lucide.createIcons();
+            }, 2500);
+        });
+    }
+</script>
+
+{% endblock %}
